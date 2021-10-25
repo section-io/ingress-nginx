@@ -49,24 +49,49 @@ if [[ -z "$ARCH" ]]; then
   ARCH=$(go env GOARCH)
 fi
 
+cat <<EOF
+
+// from run-in-docker.sh
+
+INGRESS_VOLUME=${INGRESS_VOLUME}
+DOCKER_OPTS=${DOCKER_OPTS}
+FLAGS=${FLAGS}
+PKG=${PKG}
+ARCH=${ARCH}
+HOME=${HOME}
+KUBE_ROOT=${KUBE_ROOT}
+GOCACHE=/go/src/${PKG}/.cache
+USER=${USER}
+E2E_IMAGE=${E2E_IMAGE}
+VOLUME_ID=${VOLUME_ID}
+
+EOF
+
 # create output directory as current user to avoid problem with docker.
 mkdir -p "${KUBE_ROOT}/bin" "${KUBE_ROOT}/bin/${ARCH}"
 
 if [[ "$DOCKER_IN_DOCKER_ENABLED" == "true" ]]; then
   /bin/bash -c "${FLAGS}"
 else
-  docker run                                            \
-    --tty                                               \
-    --rm                                                \
-    ${DOCKER_OPTS}                                      \
-    -e GOCACHE="/go/src/${PKG}/.cache"                  \
-    -e DOCKER_IN_DOCKER_ENABLED="true"                  \
-    -v "${HOME}/.kube:${HOME}/.kube"                    \
-    -v "${KUBE_ROOT}:/go/src/${PKG}"                    \
-    -v "${KUBE_ROOT}/bin/${ARCH}:/go/bin/linux_${ARCH}" \
-    -v "/var/run/docker.sock:/var/run/docker.sock"      \
-    -v "${INGRESS_VOLUME}:/etc/ingress-controller/"     \
-    -w "/go/src/${PKG}"                                 \
-    -u $(id -u ${USER}):$(id -g ${USER})                \
-    ${E2E_IMAGE} /bin/bash -c "${FLAGS}"
+    pwd && ls -al
+    echo "hostname: $(hostname)"
+    echo "FLAGS: $FLAGS"
+    echo "DOCKER_OPTS: $DOCKER_OPTS"
+    cat VOLUME_ID
+    docker run                                                 \
+           --tty                                               \
+           --rm                                                \
+           ${DOCKER_OPTS}                                      \
+           -e GOCACHE="/ingress-nginx/.cache"                  \
+           -e DOCKER_IN_DOCKER_ENABLED="true"                  \
+           -v "${HOME}/.kube:${HOME}/.kube"                    \
+           -v "${KUBE_ROOT}:/go/src/${PKG}"                    \
+           -v "${KUBE_ROOT}/bin/${ARCH}:/go/bin/linux_${ARCH}" \
+           -v "/var/run/docker.sock:/var/run/docker.sock"      \
+           -v "${INGRESS_VOLUME}:/etc/ingress-controller/"     \
+           -v "$VOLUME_ID:/ingress-nginx"                      \
+           -w "/go/src/${PKG}"                                 \
+           -u $(id -u ${USER}):$(id -g ${USER})                \
+           ${E2E_IMAGE} /bin/bash -c \
+           "echo 'next docker container' ; hostname ; pwd ; ls ; ls /ingress-nginx ; cd /ingress-nginx && $FLAGS build/build.sh"
 fi

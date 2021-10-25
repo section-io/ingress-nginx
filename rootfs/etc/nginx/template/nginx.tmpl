@@ -117,7 +117,7 @@ http {
         else
           plugins = res
         end
-        -- load all plugins that'll be used here
+        -- load all plugins that will be used here
         plugins.init({ {{ range  $idx, $plugin := $cfg.Plugins }}{{ if $idx }},{{ end }}{{ $plugin | quote }}{{ end }} })
     }
 

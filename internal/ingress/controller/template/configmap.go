@@ -81,7 +81,7 @@ var (
 )
 
 const (
-	maxAllowedLuaDictSize = 200
+	maxAllowedLuaDictSize = 600 // Was: 200.  Updated since Section runs minimum of 300
 	maxNumberOfLuaDicts   = 100
 )
 

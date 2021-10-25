@@ -32,6 +32,7 @@ import (
 	"reflect"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	text_template "text/template"
 	"time"
@@ -46,13 +47,16 @@ import (
 	"k8s.io/ingress-nginx/internal/ingress/annotations/influxdb"
 	"k8s.io/ingress-nginx/internal/ingress/annotations/ratelimit"
 	"k8s.io/ingress-nginx/internal/ingress/controller/config"
+	"k8s.io/ingress-nginx/internal/ingress/controller/template/section"
 	ing_net "k8s.io/ingress-nginx/internal/net"
 )
 
 const (
-	slash         = "/"
-	nonIdempotent = "non_idempotent"
-	defBufferSize = 65535
+	slash                               = "/"
+	nonIdempotent                       = "non_idempotent"
+	defBufferSize                       = 65535
+	sectionDefaultCertificateDictSize   = 300
+	sectionDefaultCertificateServerSize = 300
 )
 
 // TemplateWriter is the interface to render a template
@@ -184,6 +188,9 @@ var (
 		"shouldLoadAuthDigestModule":         shouldLoadAuthDigestModule,
 		"shouldLoadInfluxDBModule":           shouldLoadInfluxDBModule,
 		"buildServerName":                    buildServerName,
+		"reduceByAlias":                      section.ReduceByAlias,
+		"reduceByAliasNoop":                  section.ReduceByAliasNoop,
+		"provider":                           section.Provider,
 	}
 )
 
@@ -245,6 +252,22 @@ func buildLuaSharedDictionaries(c interface{}, s interface{}) string {
 		return ""
 	}
 
+	// check if config contains lua "lua_metrics_data" value otherwise, use default
+	metricsData, ok := cfg.LuaSharedDicts["metrics_data"]
+	if !ok {
+		metricsData = 32
+	}
+	out = append(out, fmt.Sprintf("lua_shared_dict metrics_data %dk", metricsData))
+
+	// In our Section branch, pull the certificate_data size from an environment
+	// variable. Using the config map in our use case will cause the lua cert
+	// dictionary to be re-allocated, but not re-populated. This is very very bad.
+	certData, _ := strconv.Atoi(os.Getenv("CERTIFICATE_LUA_SHARED_DICT_SIZE"))
+	if certData == 0 {
+		certData = sectionDefaultCertificateDictSize
+	}
+	out = append(out, fmt.Sprintf("lua_shared_dict certificate_data %dM", certData))
+
 	for name, size := range cfg.LuaSharedDicts {
 		out = append(out, fmt.Sprintf("lua_shared_dict %s %dM", name, size))
 	}
@@ -279,24 +302,24 @@ func configForLua(input interface{}) string {
 	}
 
 	return fmt.Sprintf(`{
-		use_forwarded_headers = %t,
-		use_proxy_protocol = %t,
-		is_ssl_passthrough_enabled = %t,
-		http_redirect_code = %v,
-		listen_ports = { ssl_proxy = "%v", https = "%v" },
+    use_forwarded_headers = %t,
+    use_proxy_protocol = %t,
+    is_ssl_passthrough_enabled = %t,
+    http_redirect_code = %v,
+    listen_ports = { ssl_proxy = "%v", https = "%v" },
 
-		hsts = %t,
-		hsts_max_age = %v,
-		hsts_include_subdomains = %t,
-		hsts_preload = %t,
+    hsts = %t,
+    hsts_max_age = %v,
+    hsts_include_subdomains = %t,
+    hsts_preload = %t,
 
-		global_throttle = {
-			memcached = {
-				host = "%v", port = %d, connect_timeout = %d, max_idle_timeout = %d, pool_size = %d,
-			},
-			status_code = %d,
-		}
-	}`,
+    global_throttle = {
+      memcached = {
+        host = "%v", port = %d, connect_timeout = %d, max_idle_timeout = %d, pool_size = %d,
+      },
+      status_code = %d,
+    }
+  }`,
 		all.Cfg.UseForwardedHeaders,
 		all.Cfg.UseProxyProtocol,
 		all.IsSSLPassthroughEnabled,
@@ -339,12 +362,12 @@ func locationConfigForLua(l interface{}, a interface{}) string {
 	}
 
 	return fmt.Sprintf(`{
-		force_ssl_redirect = %t,
-		ssl_redirect = %t,
-		force_no_ssl_redirect = %t,
-		use_port_in_redirects = %t,
-		global_throttle = { namespace = "%v", limit = %d, window_size = %d, key = %v, ignored_cidrs = %v },
-	}`,
+    force_ssl_redirect = %t,
+    ssl_redirect = %t,
+    force_no_ssl_redirect = %t,
+    use_port_in_redirects = %t,
+    global_throttle = { namespace = "%v", limit = %d, window_size = %d, key = %v, ignored_cidrs = %v },
+  }`,
 		location.Rewrite.ForceSSLRedirect,
 		location.Rewrite.SSLRedirect,
 		isLocationInLocationList(l, all.Cfg.NoTLSRedirectLocations),
@@ -584,9 +607,25 @@ func buildProxyPass(host string, b interface{}, loc interface{}) string {
 			xForwardedPrefix = fmt.Sprintf("proxy_set_header X-Forwarded-Prefix \"%s\";\n", location.XForwardedPrefix)
 		}
 
+		// The upstream version doesn't attempt to rewrite using the
+		// request_uri, and this behavior has waffled between the last two
+		// versions we've built at Section.  v15 didn't require the URI
+		// handling we've added.  While v24/v25 required the changes below
+		// for backward compatibility.  The latest at v46 has partially
+		// reverted to the behavior found in v15, but with the added
+		// caveat that it uses exact matches instead of prefixes to
+		// location blocks requiring less regex matching.
+
+		//    return fmt.Sprintf(`
+		// rewrite "(?i)%s" %s break;
+		// %v%v %s%s;`, path, location.Rewrite.Target, xForwardedPrefix, proxyPass, proto, upstreamName)
+
+		// The regexes, in ingresses, have the side-effect that they cause different matching
 		return fmt.Sprintf(`
+rewrite ^ $request_uri;
 rewrite "(?i)%s" %s break;
-%v%v %s%s;`, path, location.Rewrite.Target, xForwardedPrefix, proxyPass, proto, upstreamName)
+return 400;
+%v%v %s%s$request_uri;`, path, location.Rewrite.Target, xForwardedPrefix, proxyPass, proto, upstreamName)
 	}
 
 	// default proxy_pass

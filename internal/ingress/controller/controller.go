@@ -1223,7 +1223,7 @@ func (n *NGINXController) createServers(data []*ingress.Ingress,
 			servers[host].SSLCert = cert
 
 			if cert.ExpireTime.Before(time.Now().Add(240 * time.Hour)) {
-				klog.Warningf("SSL certificate for server %q is about to expire (%v)", host, cert.ExpireTime)
+				klog.V(3).Infof("SSL certificate for server %q is about to expire (%v)", host, cert.ExpireTime)
 			}
 		}
 	}

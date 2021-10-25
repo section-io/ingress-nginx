@@ -49,17 +49,21 @@ ifeq ($(ARCH),)
     $(error mandatory variable ARCH is empty, either set it when calling the command or make sure 'go env GOARCH' works)
 endif
 
-REGISTRY ?= gcr.io/k8s-staging-ingress-nginx
+REGISTRY ?= gcr.io/section-io/nginx-ingress-controller
 
 BASE_IMAGE ?= k8s.gcr.io/ingress-nginx/nginx:v20210324-g8baef769d@sha256:fcfa3e9d1f8ec3141efedbf77cf659640f452a9c22165c78006ea462b84d06f6
 
 GOARCH=$(ARCH)
 
+# tried just about every way to pass the VOLUME_ID from shared-ingress
+# build to this file without luck until this
+VOLUME_ID=$(shell cat ./VOLUME_ID)
+
 help:  ## Display this help
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z0-9_-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
 .PHONY: image
-image: clean-image ## Build image for a particular arch.
+makebuilimage: clean-image ## Build image for a particular arch.
 	echo "Building docker image ($(ARCH))..."
 	@docker build \
 		--no-cache \
@@ -75,8 +79,12 @@ clean-image: ## Removes local image
 	echo "removing old image $(REGISTRY)/controller:$(TAG)"
 	@docker rmi -f $(REGISTRY)/controller:$(TAG) || true
 
-.PHONY: build
-build:  ## Build ingress controller, debug tool and pre-stop hook.
+.PHONY: section-build
+section-build:
+	echo "ran both 'make build' and 'make image'"
+	@docker images
+
+	echo "Building executables with run-in-docker.sh ($(ARCH))..."
 	@build/run-in-docker.sh \
 		PKG=$(PKG) \
 		ARCH=$(ARCH) \
@@ -84,6 +92,30 @@ build:  ## Build ingress controller, debug tool and pre-stop hook.
 		REPO_INFO=$(REPO_INFO) \
 		TAG=$(TAG) \
 		GOBUILD_FLAGS=$(GOBUILD_FLAGS) \
+		VOLUME_ID=$(VOLUME_ID) \
+		build/build.sh
+
+	echo "Building docker image ($(ARCH))..."
+	@docker build \
+		--no-cache \
+		--build-arg BASE_IMAGE="$(BASE_IMAGE)" \
+		--build-arg VERSION="$(TAG)" \
+		--build-arg TARGETARCH="$(ARCH)" \
+		--build-arg COMMIT_SHA="$(COMMIT_SHA)" \
+		--build-arg BUILD_ID="$(BUILD_ID)" \
+		-t $(REGISTRY)/controller:$(TAG) rootfs
+
+.PHONY: build
+build:  ## Build ingress controller, debug tool and pre-stop hook.
+	echo "Building executables with run-in-docker.sh ($(ARCH))..."
+	@build/run-in-docker.sh \
+		PKG=$(PKG) \
+		ARCH=$(ARCH) \
+		COMMIT_SHA=$(COMMIT_SHA) \
+		REPO_INFO=$(REPO_INFO) \
+		TAG=$(TAG) \
+		GOBUILD_FLAGS=$(GOBUILD_FLAGS) \
+		VOLUME_ID=$(VOLUME_ID) \
 		build/build.sh
 
 .PHONY: build-plugin
@@ -95,6 +127,7 @@ build-plugin:  ## Build ingress-nginx krew plugin.
 		REPO_INFO=$(REPO_INFO) \
 		TAG=$(TAG) \
 		GOBUILD_FLAGS=$(GOBUILD_FLAGS) \
+		VOLUME_ID=$(VOLUME_ID) \
 		build/build-plugin.sh
 
 .PHONY: clean
@@ -150,9 +183,9 @@ vet:
 .PHONY: check_dead_links
 check_dead_links: ## Check if the documentation contains dead links.
 	@docker run -t \
-	  -v $$PWD:/tmp aledbf/awesome_bot:0.1 \
-	  --allow-dupe \
-	  --allow-redirect $(shell find $$PWD -mindepth 1 -name "*.md" -printf '%P\n' | grep -v vendor | grep -v Changelog.md)
+		-v $$PWD:/tmp aledbf/awesome_bot:0.1 \
+		--allow-dupe \
+		--allow-redirect $(shell find $$PWD -mindepth 1 -name "*.md" -printf '%P\n' | grep -v vendor | grep -v Changelog.md)
 
 .PHONY: dev-env
 dev-env:  ## Starts a local Kubernetes cluster using kind, building and deploying the ingress controller.
