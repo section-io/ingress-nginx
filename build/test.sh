@@ -23,8 +23,6 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-# Removed so that we can focus specifically on Section tests
-
 # if [ -z "${PKG}" ]; then
 #   echo "PKG must be set"
 #   exit 1
@@ -34,4 +32,6 @@ set -o pipefail
 #   $(go list "${PKG}/..." | grep -v vendor | grep -v '/test/e2e' | grep -v images | grep -v "docs/examples")
 
 
-go test -v 	k8s.io/ingress-nginx/internal/ingress/controller/template/section
+go test -v \
+   k8s.io/ingress-nginx/internal/ingress/controller/template/section \
+   k8s.io/ingress-nginx/internal/ingress/metric/collectors

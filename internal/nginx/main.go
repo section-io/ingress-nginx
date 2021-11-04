@@ -55,6 +55,9 @@ var HealthCheckTimeout = 10 * time.Second
 // http://nginx.org/en/docs/http/ngx_http_stub_status_module.html
 var StatusPath = "/nginx_status"
 
+// LuaStatusPath defines the path used to expose the NGINX LUA status page
+var LuaStatusPath = "/configuration/metrics"
+
 // StreamPort defines the port used by NGINX for the NGINX stream configuration socket
 var StreamPort = 10247
 

@@ -10,15 +10,21 @@ import (
 	"k8s.io/ingress-nginx/internal/ingress"
 )
 
+var n = 0
+
+func id() int {
+	n++
+	return n
+}
+
 // ToJSON takes the value and write it as JSON to /etc/nginx/input.json
-func ToJSON(input interface{}) string {
+func ToJSON(input interface{}, name string) string {
 	bin, err := json.MarshalIndent(input, "  ", "")
 	if err != nil {
 		return err.Error()
 	}
-
-	// www-data has permissions to write to /tmp
-	err = ioutil.WriteFile("/etc/nginx/input.json", bin, 0777)
+	jsonfile := fmt.Sprintf("%s.json.%d", name, id())
+	err = ioutil.WriteFile(jsonfile, bin, 0664)
 	if err != nil {
 		return err.Error()
 	}
@@ -40,10 +46,12 @@ func reduceByAlias(servers []*ingress.Server) []*ingress.Server {
 	// The fallback server `_` has no Alias, so this relies on us using an Alias
 	// for all ingress objects so there is no overlap.
 	rs := map[string]ingress.Server{}
+	var defaultServer *ingress.Server
 	for _, srv := range servers {
 		s := *srv //shallow copy seems acceptable for this scenario
 		if len(s.Aliases) == 0 && s.Hostname == "_" {
 			log.Printf("[INFO] found 'non-default' ingress with no aliases (hostname: %s) (server: %+v)", s.Hostname, s)
+			defaultServer = srv
 			continue
 		}
 		// case: all servers except where host name isn't default '_'
@@ -87,7 +95,9 @@ func reduceByAlias(servers []*ingress.Server) []*ingress.Server {
 		}
 		srv = append(srv, &val)
 	}
-
+	if defaultServer != nil {
+		srv = append(srv, defaultServer)
+	}
 	return srv
 }
 

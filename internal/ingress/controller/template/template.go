@@ -191,6 +191,7 @@ var (
 		"reduceByAlias":                      section.ReduceByAlias,
 		"reduceByAliasNoop":                  section.ReduceByAliasNoop,
 		"provider":                           section.Provider,
+		"toJSON":                             section.ToJSON,
 	}
 )
 
@@ -259,6 +260,15 @@ func buildLuaSharedDictionaries(c interface{}, s interface{}) string {
 	}
 	out = append(out, fmt.Sprintf("lua_shared_dict metrics_data %dk", metricsData))
 
+	// Our Section for v25 only set the size for the certificate_data
+	// dict, but with v46 there is a new map which we should increase in
+	// size to handle certificate_servers as well.
+	serversData, _ := strconv.Atoi(os.Getenv("SERVERS_LUA_SHARED_DICT_SIZE"))
+	if serversData == 0 {
+		serversData = sectionDefaultCertificateServerSize
+	}
+	cfg.LuaSharedDicts["certificate_servers"] = serversData
+
 	// In our Section branch, pull the certificate_data size from an environment
 	// variable. Using the config map in our use case will cause the lua cert
 	// dictionary to be re-allocated, but not re-populated. This is very very bad.
@@ -266,7 +276,7 @@ func buildLuaSharedDictionaries(c interface{}, s interface{}) string {
 	if certData == 0 {
 		certData = sectionDefaultCertificateDictSize
 	}
-	out = append(out, fmt.Sprintf("lua_shared_dict certificate_data %dM", certData))
+	cfg.LuaSharedDicts["certificate_data"] = certData
 
 	for name, size := range cfg.LuaSharedDicts {
 		out = append(out, fmt.Sprintf("lua_shared_dict %s %dM", name, size))
@@ -620,7 +630,9 @@ func buildProxyPass(host string, b interface{}, loc interface{}) string {
 		// rewrite "(?i)%s" %s break;
 		// %v%v %s%s;`, path, location.Rewrite.Target, xForwardedPrefix, proxyPass, proto, upstreamName)
 
-		// The regexes, in ingresses, have the side-effect that they cause different matching
+		// The regexes, in ingresses, have the side-effect that they cause
+		// different matching so we attempt to force the behavior we
+		// require here
 		return fmt.Sprintf(`
 rewrite ^ $request_uri;
 rewrite "(?i)%s" %s break;

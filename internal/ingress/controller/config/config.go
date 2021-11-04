@@ -766,6 +766,7 @@ func NewDefault() Configuration {
 		BlockCIDRs:                       defBlockEntity,
 		BlockUserAgents:                  defBlockEntity,
 		BlockReferers:                    defBlockEntity,
+		LuaSharedDicts:                   map[string]int{},
 		BrotliLevel:                      4,
 		BrotliTypes:                      brotliTypes,
 		ClientHeaderBufferSize:           "1k",

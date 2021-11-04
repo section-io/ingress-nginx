@@ -49,6 +49,7 @@ ifeq ($(ARCH),)
     $(error mandatory variable ARCH is empty, either set it when calling the command or make sure 'go env GOARCH' works)
 endif
 
+#REGISTRY ?= gcr.io/k8s-staging-ingress-nginx
 REGISTRY ?= gcr.io/section-io/nginx-ingress-controller
 
 BASE_IMAGE ?= k8s.gcr.io/ingress-nginx/nginx:v20210324-g8baef769d@sha256:fcfa3e9d1f8ec3141efedbf77cf659640f452a9c22165c78006ea462b84d06f6
@@ -80,7 +81,7 @@ clean-image: ## Removes local image
 	@docker rmi -f $(REGISTRY)/controller:$(TAG) || true
 
 .PHONY: section-build
-section-build:
+section-build: 
 	echo "ran both 'make build' and 'make image'"
 	@docker images
 
@@ -104,6 +105,8 @@ section-build:
 		--build-arg COMMIT_SHA="$(COMMIT_SHA)" \
 		--build-arg BUILD_ID="$(BUILD_ID)" \
 		-t $(REGISTRY)/controller:$(TAG) rootfs
+
+	@docker images
 
 .PHONY: build
 build:  ## Build ingress controller, debug tool and pre-stop hook.
