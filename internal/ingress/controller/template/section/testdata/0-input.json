@@ -1,0 +1,1469 @@
+[
+  {
+    "hostname": "_",
+    "sslPassthrough": false,
+    "locations": [
+      {
+        "path": "/",
+        "pathType": "Prefix",
+        "isDefBackend": true,
+        "ingress": null,
+        "ingressPath": "",
+        "backend": "upstream-default-backend",
+        "port": 0,
+        "upstream-vhost": "",
+        "basicDigestAuth": {
+          "type": "",
+          "realm": "",
+          "file": "",
+          "secured": false,
+          "fileSha": "",
+          "secret": "",
+          "secretType": ""
+        },
+        "corsConfig": {
+          "corsEnabled": false,
+          "corsAllowOrigin": "",
+          "corsAllowMethods": "",
+          "corsAllowHeaders": "",
+          "corsAllowCredentials": false,
+          "corsExposeHeaders": "",
+          "corsMaxAge": 0
+        },
+        "externalAuth": {
+          "url": "",
+          "host": "",
+          "signinUrl": "",
+          "method": "",
+          "requestRedirect": "",
+          "authSnippet": "",
+          "authCacheKey": "",
+          "authCacheDuration": null
+        },
+        "enableGlobalAuth": false,
+        "rateLimit": {
+          "connections": {
+            "name": "",
+            "limit": 0,
+            "burst": 0,
+            "sharedSize": 0
+          },
+          "rps": {
+            "name": "",
+            "limit": 0,
+            "burst": 0,
+            "sharedSize": 0
+          },
+          "rpm": {
+            "name": "",
+            "limit": 0,
+            "burst": 0,
+            "sharedSize": 0
+          },
+          "limit-rate": 0,
+          "limit-rate-after": 0,
+          "name": "",
+          "id": "",
+          "whitelist": null
+        },
+        "globalRateLimit": {
+          "namespace": "",
+          "limit": 0,
+          "window-size": 0,
+          "key": "",
+          "ignored-cidrs": null
+        },
+        "redirect": {
+          "url": "",
+          "code": 0,
+          "fromToWWW": false
+        },
+        "rewrite": {
+          "target": "",
+          "sslRedirect": false,
+          "forceSSLRedirect": false,
+          "appRoot": "",
+          "useRegex": false
+        },
+        "whitelist": {},
+        "proxy": {
+          "bodySize": "500m",
+          "connectTimeout": 5,
+          "sendTimeout": 60,
+          "readTimeout": 60,
+          "buffersNumber": 4,
+          "bufferSize": "256k",
+          "cookieDomain": "off",
+          "cookiePath": "off",
+          "nextUpstream": "error timeout",
+          "nextUpstreamTimeout": 0,
+          "nextUpstreamTries": 3,
+          "proxyRedirectFrom": "off",
+          "proxyRedirectTo": "",
+          "requestBuffering": "on",
+          "proxyBuffering": "on",
+          "proxyHTTPVersion": "1.1",
+          "proxyMaxTempFileSize": "1024m"
+        },
+        "proxySSL": {
+          "secret": "",
+          "caFilename": "",
+          "caSha": "",
+          "crlFileName": "",
+          "crlSha": "",
+          "pemFilename": "",
+          "ciphers": "",
+          "protocols": "",
+          "proxySSLName": "",
+          "verify": "",
+          "verifyDepth": 0,
+          "proxySSLServerName": ""
+        },
+        "usePortInRedirects": false,
+        "configurationSnippet": "",
+        "connection": {
+          "header": "",
+          "enabled": false
+        },
+        "logs": {
+          "accessLog": true,
+          "rewriteLog": false
+        },
+        "influxDB": {
+          "influxDBEnabled": false,
+          "influxDBMeasurement": "",
+          "influxDBPort": "",
+          "influxDBHost": "",
+          "influxDBServerName": ""
+        },
+        "backend-protocol": "",
+        "fastcgi": {
+          "index": "",
+          "params": null
+        },
+        "custom-http-errors": null,
+        "modsecurity": {
+          "enable-modsecurity": false,
+          "enable-modsecurity-set": false,
+          "enable-owasp-core-rules": false,
+          "modsecurity-transaction-id": "",
+          "modsecurity-snippet": ""
+        },
+        "satisfy": "",
+        "mirror": {
+          "source": "",
+          "requestBody": "",
+          "target": ""
+        },
+        "opentracing": {
+          "enabled": false,
+          "set": false
+        }
+      }
+    ],
+    "certificateAuth": {
+      "secret": "",
+      "caFilename": "",
+      "caSha": "",
+      "crlFileName": "",
+      "crlSha": "",
+      "pemFilename": "",
+      "verify_client": "",
+      "validationDepth": 0,
+      "errorPage": "",
+      "passCertToUpstream": false,
+      "AuthTLSError": ""
+    },
+    "proxySSL": {
+      "secret": "",
+      "caFilename": "",
+      "caSha": "",
+      "crlFileName": "",
+      "crlSha": "",
+      "pemFilename": "",
+      "ciphers": "",
+      "protocols": "",
+      "proxySSLName": "",
+      "verify": "",
+      "verifyDepth": 0,
+      "proxySSLServerName": ""
+    },
+    "serverSnippet": ""
+  },
+  {
+    "hostname": "abus-section-poc.inweb.co",
+    "sslPassthrough": false,
+    "locations": [
+      {
+        "path": "/",
+        "pathType": "Prefix",
+        "isDefBackend": false,
+        "ingress": {
+          "parsedAnnotations": {
+            "name": "section-env12951-master-125c13d9166c8-shared",
+            "namespace": "section-env12951-master-125c13d9166c8",
+            "resourceVersion": "879990210",
+            "generation": 2,
+            "creationTimestamp": "2021-01-28T14:48:49Z",
+            "labels": {
+              "section.io/environment-ingress": "true"
+            },
+            "annotations": {
+              "kubernetes.io/ingress.class": "shared-ingress",
+              "nginx.ingress.kubernetes.io/configuration-snippet": "set $log_proxy_stack \"acc2372-app7871-env12951\";",
+              "nginx.ingress.kubernetes.io/proxy-read-timeout": "195",
+              "nginx.ingress.kubernetes.io/proxy-send-timeout": "195",
+              "nginx.ingress.kubernetes.io/rewrite-target": "",
+              "nginx.ingress.kubernetes.io/server-alias": "e5f21072afc5a4293c0d558ae814832fb29b2e3b686c887aa927969fd14cd24b",
+              "nginx.ingress.kubernetes.io/server-snippet": "set $use_paid_geoip_database \"false\";\nset $log_sample \"\";\n"
+            },
+            "BackendProtocol": "HTTP",
+            "Aliases": [
+              "e5f21072afc5a4293c0d558ae814832fb29b2e3b686c887aa927969fd14cd24b"
+            ],
+            "BasicDigestAuth": {
+              "type": "",
+              "realm": "",
+              "file": "",
+              "secured": false,
+              "fileSha": "",
+              "secret": "",
+              "secretType": ""
+            },
+            "Canary": {
+              "Enabled": false,
+              "Weight": 0,
+              "Header": "",
+              "HeaderValue": "",
+              "HeaderPattern": "",
+              "Cookie": ""
+            },
+            "CertificateAuth": {
+              "secret": "",
+              "caFilename": "",
+              "caSha": "",
+              "crlFileName": "",
+              "crlSha": "",
+              "pemFilename": "",
+              "verify_client": "",
+              "validationDepth": 0,
+              "errorPage": "",
+              "passCertToUpstream": false,
+              "AuthTLSError": ""
+            },
+            "ClientBodyBufferSize": "",
+            "ConfigurationSnippet": "set $log_proxy_stack \"acc2372-app7871-env12951\";",
+            "Connection": {
+              "header": "",
+              "enabled": false
+            },
+            "CorsConfig": {
+              "corsEnabled": false,
+              "corsAllowOrigin": "*",
+              "corsAllowMethods": "GET, PUT, POST, DELETE, PATCH, OPTIONS",
+              "corsAllowHeaders": "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization",
+              "corsAllowCredentials": true,
+              "corsExposeHeaders": "",
+              "corsMaxAge": 1728000
+            },
+            "CustomHTTPErrors": null,
+            "DefaultBackend": null,
+            "FastCGI": {
+              "index": "",
+              "params": null
+            },
+            "Denied": null,
+            "ExternalAuth": {
+              "url": "",
+              "host": "",
+              "signinUrl": "",
+              "method": "",
+              "requestRedirect": "",
+              "authSnippet": "",
+              "authCacheKey": "",
+              "authCacheDuration": null
+            },
+            "EnableGlobalAuth": true,
+            "HTTP2PushPreload": false,
+            "Opentracing": {
+              "enabled": false,
+              "set": false
+            },
+            "Proxy": {
+              "bodySize": "500m",
+              "connectTimeout": 5,
+              "sendTimeout": 195,
+              "readTimeout": 195,
+              "buffersNumber": 4,
+              "bufferSize": "256k",
+              "cookieDomain": "off",
+              "cookiePath": "off",
+              "nextUpstream": "error timeout",
+              "nextUpstreamTimeout": 0,
+              "nextUpstreamTries": 3,
+              "proxyRedirectFrom": "off",
+              "proxyRedirectTo": "off",
+              "requestBuffering": "on",
+              "proxyBuffering": "on",
+              "proxyHTTPVersion": "1.1",
+              "proxyMaxTempFileSize": "1024m"
+            },
+            "ProxySSL": {
+              "secret": "",
+              "caFilename": "",
+              "caSha": "",
+              "crlFileName": "",
+              "crlSha": "",
+              "pemFilename": "",
+              "ciphers": "",
+              "protocols": "",
+              "proxySSLName": "",
+              "verify": "",
+              "verifyDepth": 0,
+              "proxySSLServerName": ""
+            },
+            "RateLimit": {
+              "connections": {
+                "name": "",
+                "limit": 0,
+                "burst": 0,
+                "sharedSize": 0
+              },
+              "rps": {
+                "name": "",
+                "limit": 0,
+                "burst": 0,
+                "sharedSize": 0
+              },
+              "rpm": {
+                "name": "",
+                "limit": 0,
+                "burst": 0,
+                "sharedSize": 0
+              },
+              "limit-rate": 0,
+              "limit-rate-after": 0,
+              "name": "",
+              "id": "",
+              "whitelist": null
+            },
+            "GlobalRateLimit": {
+              "namespace": "",
+              "limit": 0,
+              "window-size": 0,
+              "key": "",
+              "ignored-cidrs": null
+            },
+            "Redirect": {
+              "url": "",
+              "code": 0,
+              "fromToWWW": false
+            },
+            "Rewrite": {
+              "target": "",
+              "sslRedirect": false,
+              "forceSSLRedirect": false,
+              "appRoot": "",
+              "useRegex": false
+            },
+            "Satisfy": "",
+            "SecureUpstream": {
+              "caCert": {
+                "secret": "",
+                "caFilename": "",
+                "caSha": "",
+                "crlFileName": "",
+                "crlSha": "",
+                "pemFilename": ""
+              }
+            },
+            "ServerSnippet": "set $use_paid_geoip_database \"false\";\nset $log_sample \"\";\n",
+            "ServiceUpstream": false,
+            "SessionAffinity": {
+              "type": "",
+              "mode": "",
+              "name": "",
+              "expires": "",
+              "maxage": "",
+              "path": "",
+              "changeonfailure": false,
+              "samesite": "",
+              "conditional-samesite-none": false
+            },
+            "SSLPassthrough": false,
+            "UsePortInRedirects": false,
+            "UpstreamHashBy": {
+              "upstream-hash-by-subset-size": 3
+            },
+            "LoadBalancing": "",
+            "UpstreamVhost": "",
+            "Whitelist": {},
+            "XForwardedPrefix": "",
+            "SSLCipher": {
+              "SSLCiphers": "",
+              "SSLPreferServerCiphers": ""
+            },
+            "Logs": {
+              "accessLog": true,
+              "rewriteLog": false
+            },
+            "InfluxDB": {
+              "influxDBEnabled": false,
+              "influxDBMeasurement": "default",
+              "influxDBPort": "8089",
+              "influxDBHost": "127.0.0.1",
+              "influxDBServerName": "nginx-ingress"
+            },
+            "ModSecurity": {
+              "enable-modsecurity": false,
+              "enable-modsecurity-set": false,
+              "enable-owasp-core-rules": false,
+              "modsecurity-transaction-id": "",
+              "modsecurity-snippet": ""
+            },
+            "Mirror": {
+              "source": "",
+              "requestBody": "on",
+              "target": ""
+            }
+          }
+        },
+        "ingressPath": "",
+        "backend": "section-env12951-master-125c13d9166c8-shared-ingress-upstream-80",
+        "port": 80,
+        "upstream-vhost": "",
+        "basicDigestAuth": {
+          "type": "",
+          "realm": "",
+          "file": "",
+          "secured": false,
+          "fileSha": "",
+          "secret": "",
+          "secretType": ""
+        },
+        "corsConfig": {
+          "corsEnabled": false,
+          "corsAllowOrigin": "*",
+          "corsAllowMethods": "GET, PUT, POST, DELETE, PATCH, OPTIONS",
+          "corsAllowHeaders": "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization",
+          "corsAllowCredentials": true,
+          "corsExposeHeaders": "",
+          "corsMaxAge": 1728000
+        },
+        "externalAuth": {
+          "url": "",
+          "host": "",
+          "signinUrl": "",
+          "method": "",
+          "requestRedirect": "",
+          "authSnippet": "",
+          "authCacheKey": "",
+          "authCacheDuration": null
+        },
+        "enableGlobalAuth": true,
+        "rateLimit": {
+          "connections": {
+            "name": "",
+            "limit": 0,
+            "burst": 0,
+            "sharedSize": 0
+          },
+          "rps": {
+            "name": "",
+            "limit": 0,
+            "burst": 0,
+            "sharedSize": 0
+          },
+          "rpm": {
+            "name": "",
+            "limit": 0,
+            "burst": 0,
+            "sharedSize": 0
+          },
+          "limit-rate": 0,
+          "limit-rate-after": 0,
+          "name": "",
+          "id": "",
+          "whitelist": null
+        },
+        "globalRateLimit": {
+          "namespace": "",
+          "limit": 0,
+          "window-size": 0,
+          "key": "",
+          "ignored-cidrs": null
+        },
+        "redirect": {
+          "url": "",
+          "code": 0,
+          "fromToWWW": false
+        },
+        "rewrite": {
+          "target": "",
+          "sslRedirect": false,
+          "forceSSLRedirect": false,
+          "appRoot": "",
+          "useRegex": false
+        },
+        "whitelist": {},
+        "proxy": {
+          "bodySize": "500m",
+          "connectTimeout": 5,
+          "sendTimeout": 195,
+          "readTimeout": 195,
+          "buffersNumber": 4,
+          "bufferSize": "256k",
+          "cookieDomain": "off",
+          "cookiePath": "off",
+          "nextUpstream": "error timeout",
+          "nextUpstreamTimeout": 0,
+          "nextUpstreamTries": 3,
+          "proxyRedirectFrom": "off",
+          "proxyRedirectTo": "off",
+          "requestBuffering": "on",
+          "proxyBuffering": "on",
+          "proxyHTTPVersion": "1.1",
+          "proxyMaxTempFileSize": "1024m"
+        },
+        "proxySSL": {
+          "secret": "",
+          "caFilename": "",
+          "caSha": "",
+          "crlFileName": "",
+          "crlSha": "",
+          "pemFilename": "",
+          "ciphers": "",
+          "protocols": "",
+          "proxySSLName": "",
+          "verify": "",
+          "verifyDepth": 0,
+          "proxySSLServerName": ""
+        },
+        "usePortInRedirects": false,
+        "configurationSnippet": "set $log_proxy_stack \"acc2372-app7871-env12951\";",
+        "connection": {
+          "header": "",
+          "enabled": false
+        },
+        "defaultBackendUpstreamName": "upstream-default-backend",
+        "logs": {
+          "accessLog": true,
+          "rewriteLog": false
+        },
+        "influxDB": {
+          "influxDBEnabled": false,
+          "influxDBMeasurement": "default",
+          "influxDBPort": "8089",
+          "influxDBHost": "127.0.0.1",
+          "influxDBServerName": "nginx-ingress"
+        },
+        "backend-protocol": "HTTP",
+        "fastcgi": {
+          "index": "",
+          "params": null
+        },
+        "custom-http-errors": null,
+        "modsecurity": {
+          "enable-modsecurity": false,
+          "enable-modsecurity-set": false,
+          "enable-owasp-core-rules": false,
+          "modsecurity-transaction-id": "",
+          "modsecurity-snippet": ""
+        },
+        "satisfy": "",
+        "mirror": {
+          "source": "",
+          "requestBody": "on",
+          "target": ""
+        },
+        "opentracing": {
+          "enabled": false,
+          "set": false
+        }
+      }
+    ],
+    "aliases": [
+      "e5f21072afc5a4293c0d558ae814832fb29b2e3b686c887aa927969fd14cd24b"
+    ],
+    "certificateAuth": {
+      "secret": "",
+      "caFilename": "",
+      "caSha": "",
+      "crlFileName": "",
+      "crlSha": "",
+      "pemFilename": "",
+      "verify_client": "",
+      "validationDepth": 0,
+      "errorPage": "",
+      "passCertToUpstream": false,
+      "AuthTLSError": ""
+    },
+    "proxySSL": {
+      "secret": "",
+      "caFilename": "",
+      "caSha": "",
+      "crlFileName": "",
+      "crlSha": "",
+      "pemFilename": "",
+      "ciphers": "",
+      "protocols": "",
+      "proxySSLName": "",
+      "verify": "",
+      "verifyDepth": 0,
+      "proxySSLServerName": ""
+    },
+    "serverSnippet": "set $use_paid_geoip_database \"false\";\nset $log_sample \"\";\n"
+  },
+  {
+    "hostname": "redirector.mysection.io",
+    "sslPassthrough": false,
+    "locations": [
+      {
+        "path": "/",
+        "pathType": "Prefix",
+        "isDefBackend": false,
+        "ingress": {
+          "parsedAnnotations": {
+            "name": "section-env14755-master-ee068ca054e2e-shared",
+            "namespace": "section-env14755-master-ee068ca054e2e",
+            "selfLink": "/apis/networking.k8s.io/v1beta1/namespaces/section-env14755-master-ee068ca054e2e/ingresses/section-env14755-master-ee068ca054e2e-shared",
+            "uid": "22c7922e-f93a-4a3e-bab7-9fa2732681e1",
+            "resourceVersion": "870904098",
+            "generation": 1,
+            "creationTimestamp": "2021-08-16T21:58:12Z",
+            "labels": {
+              "section.io/environment-ingress": "true"
+            },
+            "annotations": {
+              "kubernetes.io/ingress.class": "shared-ingress",
+              "nginx.ingress.kubernetes.io/configuration-snippet": "set $log_proxy_stack \"acc2064-app8689-env14755\";",
+              "nginx.ingress.kubernetes.io/proxy-read-timeout": "195",
+              "nginx.ingress.kubernetes.io/proxy-send-timeout": "195",
+              "nginx.ingress.kubernetes.io/rewrite-target": "",
+              "nginx.ingress.kubernetes.io/server-alias": "bc236620e00dde90d8577271c10026855f0a240cf29d4553e2726f80e4ae9107",
+              "nginx.ingress.kubernetes.io/server-snippet": "set $use_paid_geoip_database \"false\";\nset $log_sample \"\";\n"
+            },
+            "BackendProtocol": "HTTP",
+            "Aliases": [
+              "bc236620e00dde90d8577271c10026855f0a240cf29d4553e2726f80e4ae9107"
+            ],
+            "BasicDigestAuth": {
+              "type": "",
+              "realm": "",
+              "file": "",
+              "secured": false,
+              "fileSha": "",
+              "secret": "",
+              "secretType": ""
+            },
+            "Canary": {
+              "Enabled": false,
+              "Weight": 0,
+              "Header": "",
+              "HeaderValue": "",
+              "HeaderPattern": "",
+              "Cookie": ""
+            },
+            "CertificateAuth": {
+              "secret": "",
+              "caFilename": "",
+              "caSha": "",
+              "crlFileName": "",
+              "crlSha": "",
+              "pemFilename": "",
+              "verify_client": "",
+              "validationDepth": 0,
+              "errorPage": "",
+              "passCertToUpstream": false,
+              "AuthTLSError": ""
+            },
+            "ClientBodyBufferSize": "",
+            "ConfigurationSnippet": "set $log_proxy_stack \"acc2064-app8689-env14755\";",
+            "Connection": {
+              "header": "",
+              "enabled": false
+            },
+            "CorsConfig": {
+              "corsEnabled": false,
+              "corsAllowOrigin": "*",
+              "corsAllowMethods": "GET, PUT, POST, DELETE, PATCH, OPTIONS",
+              "corsAllowHeaders": "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization",
+              "corsAllowCredentials": true,
+              "corsExposeHeaders": "",
+              "corsMaxAge": 1728000
+            },
+            "CustomHTTPErrors": null,
+            "DefaultBackend": null,
+            "FastCGI": {
+              "index": "",
+              "params": null
+            },
+            "Denied": null,
+            "ExternalAuth": {
+              "url": "",
+              "host": "",
+              "signinUrl": "",
+              "method": "",
+              "requestRedirect": "",
+              "authSnippet": "",
+              "authCacheKey": "",
+              "authCacheDuration": null
+            },
+            "EnableGlobalAuth": true,
+            "HTTP2PushPreload": false,
+            "Opentracing": {
+              "enabled": false,
+              "set": false
+            },
+            "Proxy": {
+              "bodySize": "500m",
+              "connectTimeout": 5,
+              "sendTimeout": 195,
+              "readTimeout": 195,
+              "buffersNumber": 4,
+              "bufferSize": "256k",
+              "cookieDomain": "off",
+              "cookiePath": "off",
+              "nextUpstream": "error timeout",
+              "nextUpstreamTimeout": 0,
+              "nextUpstreamTries": 3,
+              "proxyRedirectFrom": "off",
+              "proxyRedirectTo": "off",
+              "requestBuffering": "on",
+              "proxyBuffering": "on",
+              "proxyHTTPVersion": "1.1",
+              "proxyMaxTempFileSize": "1024m"
+            },
+            "ProxySSL": {
+              "secret": "",
+              "caFilename": "",
+              "caSha": "",
+              "crlFileName": "",
+              "crlSha": "",
+              "pemFilename": "",
+              "ciphers": "",
+              "protocols": "",
+              "proxySSLName": "",
+              "verify": "",
+              "verifyDepth": 0,
+              "proxySSLServerName": ""
+            },
+            "RateLimit": {
+              "connections": {
+                "name": "",
+                "limit": 0,
+                "burst": 0,
+                "sharedSize": 0
+              },
+              "rps": {
+                "name": "",
+                "limit": 0,
+                "burst": 0,
+                "sharedSize": 0
+              },
+              "rpm": {
+                "name": "",
+                "limit": 0,
+                "burst": 0,
+                "sharedSize": 0
+              },
+              "limit-rate": 0,
+              "limit-rate-after": 0,
+              "name": "",
+              "id": "",
+              "whitelist": null
+            },
+            "GlobalRateLimit": {
+              "namespace": "",
+              "limit": 0,
+              "window-size": 0,
+              "key": "",
+              "ignored-cidrs": null
+            },
+            "Redirect": {
+              "url": "",
+              "code": 0,
+              "fromToWWW": false
+            },
+            "Rewrite": {
+              "target": "",
+              "sslRedirect": false,
+              "forceSSLRedirect": false,
+              "appRoot": "",
+              "useRegex": false
+            },
+            "Satisfy": "",
+            "SecureUpstream": {
+              "caCert": {
+                "secret": "",
+                "caFilename": "",
+                "caSha": "",
+                "crlFileName": "",
+                "crlSha": "",
+                "pemFilename": ""
+              }
+            },
+            "ServerSnippet": "set $use_paid_geoip_database \"false\";\nset $log_sample \"\";\n",
+            "ServiceUpstream": false,
+            "SessionAffinity": {
+              "type": "",
+              "mode": "",
+              "name": "",
+              "expires": "",
+              "maxage": "",
+              "path": "",
+              "changeonfailure": false,
+              "samesite": "",
+              "conditional-samesite-none": false
+            },
+            "SSLPassthrough": false,
+            "UsePortInRedirects": false,
+            "UpstreamHashBy": {
+              "upstream-hash-by-subset-size": 3
+            },
+            "LoadBalancing": "",
+            "UpstreamVhost": "",
+            "Whitelist": {},
+            "XForwardedPrefix": "",
+            "SSLCipher": {
+              "SSLCiphers": "",
+              "SSLPreferServerCiphers": ""
+            },
+            "Logs": {
+              "accessLog": true,
+              "rewriteLog": false
+            },
+            "InfluxDB": {
+              "influxDBEnabled": false,
+              "influxDBMeasurement": "default",
+              "influxDBPort": "8089",
+              "influxDBHost": "127.0.0.1",
+              "influxDBServerName": "nginx-ingress"
+            },
+            "ModSecurity": {
+              "enable-modsecurity": false,
+              "enable-modsecurity-set": false,
+              "enable-owasp-core-rules": false,
+              "modsecurity-transaction-id": "",
+              "modsecurity-snippet": ""
+            },
+            "Mirror": {
+              "source": "",
+              "requestBody": "on",
+              "target": ""
+            }
+          }
+        },
+        "ingressPath": "",
+        "backend": "section-env14755-master-ee068ca054e2e-shared-ingress-upstream-80",
+        "port": 80,
+        "upstream-vhost": "",
+        "basicDigestAuth": {
+          "type": "",
+          "realm": "",
+          "file": "",
+          "secured": false,
+          "fileSha": "",
+          "secret": "",
+          "secretType": ""
+        },
+        "corsConfig": {
+          "corsEnabled": false,
+          "corsAllowOrigin": "*",
+          "corsAllowMethods": "GET, PUT, POST, DELETE, PATCH, OPTIONS",
+          "corsAllowHeaders": "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization",
+          "corsAllowCredentials": true,
+          "corsExposeHeaders": "",
+          "corsMaxAge": 1728000
+        },
+        "externalAuth": {
+          "url": "",
+          "host": "",
+          "signinUrl": "",
+          "method": "",
+          "requestRedirect": "",
+          "authSnippet": "",
+          "authCacheKey": "",
+          "authCacheDuration": null
+        },
+        "enableGlobalAuth": true,
+        "rateLimit": {
+          "connections": {
+            "name": "",
+            "limit": 0,
+            "burst": 0,
+            "sharedSize": 0
+          },
+          "rps": {
+            "name": "",
+            "limit": 0,
+            "burst": 0,
+            "sharedSize": 0
+          },
+          "rpm": {
+            "name": "",
+            "limit": 0,
+            "burst": 0,
+            "sharedSize": 0
+          },
+          "limit-rate": 0,
+          "limit-rate-after": 0,
+          "name": "",
+          "id": "",
+          "whitelist": null
+        },
+        "globalRateLimit": {
+          "namespace": "",
+          "limit": 0,
+          "window-size": 0,
+          "key": "",
+          "ignored-cidrs": null
+        },
+        "redirect": {
+          "url": "",
+          "code": 0,
+          "fromToWWW": false
+        },
+        "rewrite": {
+          "target": "",
+          "sslRedirect": false,
+          "forceSSLRedirect": false,
+          "appRoot": "",
+          "useRegex": false
+        },
+        "whitelist": {},
+        "proxy": {
+          "bodySize": "500m",
+          "connectTimeout": 5,
+          "sendTimeout": 195,
+          "readTimeout": 195,
+          "buffersNumber": 4,
+          "bufferSize": "256k",
+          "cookieDomain": "off",
+          "cookiePath": "off",
+          "nextUpstream": "error timeout",
+          "nextUpstreamTimeout": 0,
+          "nextUpstreamTries": 3,
+          "proxyRedirectFrom": "off",
+          "proxyRedirectTo": "off",
+          "requestBuffering": "on",
+          "proxyBuffering": "on",
+          "proxyHTTPVersion": "1.1",
+          "proxyMaxTempFileSize": "1024m"
+        },
+        "proxySSL": {
+          "secret": "",
+          "caFilename": "",
+          "caSha": "",
+          "crlFileName": "",
+          "crlSha": "",
+          "pemFilename": "",
+          "ciphers": "",
+          "protocols": "",
+          "proxySSLName": "",
+          "verify": "",
+          "verifyDepth": 0,
+          "proxySSLServerName": ""
+        },
+        "usePortInRedirects": false,
+        "configurationSnippet": "set $log_proxy_stack \"acc2064-app8689-env14755\";",
+        "connection": {
+          "header": "",
+          "enabled": false
+        },
+        "defaultBackendUpstreamName": "upstream-default-backend",
+        "logs": {
+          "accessLog": true,
+          "rewriteLog": false
+        },
+        "influxDB": {
+          "influxDBEnabled": false,
+          "influxDBMeasurement": "default",
+          "influxDBPort": "8089",
+          "influxDBHost": "127.0.0.1",
+          "influxDBServerName": "nginx-ingress"
+        },
+        "backend-protocol": "HTTP",
+        "fastcgi": {
+          "index": "",
+          "params": null
+        },
+        "custom-http-errors": null,
+        "modsecurity": {
+          "enable-modsecurity": false,
+          "enable-modsecurity-set": false,
+          "enable-owasp-core-rules": false,
+          "modsecurity-transaction-id": "",
+          "modsecurity-snippet": ""
+        },
+        "satisfy": "",
+        "mirror": {
+          "source": "",
+          "requestBody": "on",
+          "target": ""
+        },
+        "opentracing": {
+          "enabled": false,
+          "set": false
+        }
+      }
+    ],
+    "aliases": [
+      "bc236620e00dde90d8577271c10026855f0a240cf29d4553e2726f80e4ae9107"
+    ],
+    "certificateAuth": {
+      "secret": "",
+      "caFilename": "",
+      "caSha": "",
+      "crlFileName": "",
+      "crlSha": "",
+      "pemFilename": "",
+      "verify_client": "",
+      "validationDepth": 0,
+      "errorPage": "",
+      "passCertToUpstream": false,
+      "AuthTLSError": ""
+    },
+    "proxySSL": {
+      "secret": "",
+      "caFilename": "",
+      "caSha": "",
+      "crlFileName": "",
+      "crlSha": "",
+      "pemFilename": "",
+      "ciphers": "",
+      "protocols": "",
+      "proxySSLName": "",
+      "verify": "",
+      "verifyDepth": 0,
+      "proxySSLServerName": ""
+    },
+    "serverSnippet": "set $use_paid_geoip_database \"false\";\nset $log_sample \"\";\n"
+  },
+  {
+    "hostname": "bacon.section.io",
+    "sslPassthrough": false,
+    "locations": [
+      {
+        "path": "/",
+        "pathType": "Prefix",
+        "isDefBackend": false,
+        "ingress": {
+          "parsedAnnotations": {
+            "name": "section-env11785-master-d5bd5c9e59ee4-shared",
+            "namespace": "section-env11785-master-d5bd5c9e59ee4",
+            "selfLink": "/apis/networking.k8s.io/v1beta1/namespaces/section-env11785-master-d5bd5c9e59ee4/ingresses/section-env11785-master-d5bd5c9e59ee4-shared",
+            "uid": "af88f009-8ae5-4d63-b7f9-eedf1d021a14",
+            "resourceVersion": "905006323",
+            "generation": 2,
+            "creationTimestamp": "2020-05-19T16:14:38Z",
+            "labels": {
+              "section.io/environment-ingress": "true"
+            },
+            "annotations": {
+              "kubernetes.io/ingress.class": "shared-ingress",
+              "nginx.ingress.kubernetes.io/configuration-snippet": "set $log_proxy_stack \"acc4-app7352-env11785\";",
+              "nginx.ingress.kubernetes.io/proxy-read-timeout": "195",
+              "nginx.ingress.kubernetes.io/proxy-send-timeout": "195",
+              "nginx.ingress.kubernetes.io/rewrite-target": "",
+              "nginx.ingress.kubernetes.io/server-alias": "6971a7b6226589edb82456c0ff7526046859d56146cc8bcea9ba46ec7c8c9c2f",
+              "nginx.ingress.kubernetes.io/server-snippet": "set $use_paid_geoip_database \"false\";\nset $log_sample \"\";\n"
+            },
+            "BackendProtocol": "HTTP",
+            "Aliases": [
+              "6971a7b6226589edb82456c0ff7526046859d56146cc8bcea9ba46ec7c8c9c2f"
+            ],
+            "BasicDigestAuth": {
+              "type": "",
+              "realm": "",
+              "file": "",
+              "secured": false,
+              "fileSha": "",
+              "secret": "",
+              "secretType": ""
+            },
+            "Canary": {
+              "Enabled": false,
+              "Weight": 0,
+              "Header": "",
+              "HeaderValue": "",
+              "HeaderPattern": "",
+              "Cookie": ""
+            },
+            "CertificateAuth": {
+              "secret": "",
+              "caFilename": "",
+              "caSha": "",
+              "crlFileName": "",
+              "crlSha": "",
+              "pemFilename": "",
+              "verify_client": "",
+              "validationDepth": 0,
+              "errorPage": "",
+              "passCertToUpstream": false,
+              "AuthTLSError": ""
+            },
+            "ClientBodyBufferSize": "",
+            "ConfigurationSnippet": "set $log_proxy_stack \"acc4-app7352-env11785\";",
+            "Connection": {
+              "header": "",
+              "enabled": false
+            },
+            "CorsConfig": {
+              "corsEnabled": false,
+              "corsAllowOrigin": "*",
+              "corsAllowMethods": "GET, PUT, POST, DELETE, PATCH, OPTIONS",
+              "corsAllowHeaders": "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization",
+              "corsAllowCredentials": true,
+              "corsExposeHeaders": "",
+              "corsMaxAge": 1728000
+            },
+            "CustomHTTPErrors": null,
+            "DefaultBackend": null,
+            "FastCGI": {
+              "index": "",
+              "params": null
+            },
+            "Denied": null,
+            "ExternalAuth": {
+              "url": "",
+              "host": "",
+              "signinUrl": "",
+              "method": "",
+              "requestRedirect": "",
+              "authSnippet": "",
+              "authCacheKey": "",
+              "authCacheDuration": null
+            },
+            "EnableGlobalAuth": true,
+            "HTTP2PushPreload": false,
+            "Opentracing": {
+              "enabled": false,
+              "set": false
+            },
+            "Proxy": {
+              "bodySize": "500m",
+              "connectTimeout": 5,
+              "sendTimeout": 195,
+              "readTimeout": 195,
+              "buffersNumber": 4,
+              "bufferSize": "256k",
+              "cookieDomain": "off",
+              "cookiePath": "off",
+              "nextUpstream": "error timeout",
+              "nextUpstreamTimeout": 0,
+              "nextUpstreamTries": 3,
+              "proxyRedirectFrom": "off",
+              "proxyRedirectTo": "off",
+              "requestBuffering": "on",
+              "proxyBuffering": "on",
+              "proxyHTTPVersion": "1.1",
+              "proxyMaxTempFileSize": "1024m"
+            },
+            "ProxySSL": {
+              "secret": "",
+              "caFilename": "",
+              "caSha": "",
+              "crlFileName": "",
+              "crlSha": "",
+              "pemFilename": "",
+              "ciphers": "",
+              "protocols": "",
+              "proxySSLName": "",
+              "verify": "",
+              "verifyDepth": 0,
+              "proxySSLServerName": ""
+            },
+            "RateLimit": {
+              "connections": {
+                "name": "",
+                "limit": 0,
+                "burst": 0,
+                "sharedSize": 0
+              },
+              "rps": {
+                "name": "",
+                "limit": 0,
+                "burst": 0,
+                "sharedSize": 0
+              },
+              "rpm": {
+                "name": "",
+                "limit": 0,
+                "burst": 0,
+                "sharedSize": 0
+              },
+              "limit-rate": 0,
+              "limit-rate-after": 0,
+              "name": "",
+              "id": "",
+              "whitelist": null
+            },
+            "GlobalRateLimit": {
+              "namespace": "",
+              "limit": 0,
+              "window-size": 0,
+              "key": "",
+              "ignored-cidrs": null
+            },
+            "Redirect": {
+              "url": "",
+              "code": 0,
+              "fromToWWW": false
+            },
+            "Rewrite": {
+              "target": "",
+              "sslRedirect": false,
+              "forceSSLRedirect": false,
+              "appRoot": "",
+              "useRegex": false
+            },
+            "Satisfy": "",
+            "SecureUpstream": {
+              "caCert": {
+                "secret": "",
+                "caFilename": "",
+                "caSha": "",
+                "crlFileName": "",
+                "crlSha": "",
+                "pemFilename": ""
+              }
+            },
+            "ServerSnippet": "set $use_paid_geoip_database \"false\";\nset $log_sample \"\";\n",
+            "ServiceUpstream": false,
+            "SessionAffinity": {
+              "type": "",
+              "mode": "",
+              "name": "",
+              "expires": "",
+              "maxage": "",
+              "path": "",
+              "changeonfailure": false,
+              "samesite": "",
+              "conditional-samesite-none": false
+            },
+            "SSLPassthrough": false,
+            "UsePortInRedirects": false,
+            "UpstreamHashBy": {
+              "upstream-hash-by-subset-size": 3
+            },
+            "LoadBalancing": "",
+            "UpstreamVhost": "",
+            "Whitelist": {},
+            "XForwardedPrefix": "",
+            "SSLCipher": {
+              "SSLCiphers": "",
+              "SSLPreferServerCiphers": ""
+            },
+            "Logs": {
+              "accessLog": true,
+              "rewriteLog": false
+            },
+            "InfluxDB": {
+              "influxDBEnabled": false,
+              "influxDBMeasurement": "default",
+              "influxDBPort": "8089",
+              "influxDBHost": "127.0.0.1",
+              "influxDBServerName": "nginx-ingress"
+            },
+            "ModSecurity": {
+              "enable-modsecurity": false,
+              "enable-modsecurity-set": false,
+              "enable-owasp-core-rules": false,
+              "modsecurity-transaction-id": "",
+              "modsecurity-snippet": ""
+            },
+            "Mirror": {
+              "source": "",
+              "requestBody": "on",
+              "target": ""
+            }
+          }
+        },
+        "ingressPath": "",
+        "backend": "section-env11785-master-d5bd5c9e59ee4-shared-ingress-upstream-80",
+        "port": 80,
+        "upstream-vhost": "",
+        "basicDigestAuth": {
+          "type": "",
+          "realm": "",
+          "file": "",
+          "secured": false,
+          "fileSha": "",
+          "secret": "",
+          "secretType": ""
+        },
+        "corsConfig": {
+          "corsEnabled": false,
+          "corsAllowOrigin": "*",
+          "corsAllowMethods": "GET, PUT, POST, DELETE, PATCH, OPTIONS",
+          "corsAllowHeaders": "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization",
+          "corsAllowCredentials": true,
+          "corsExposeHeaders": "",
+          "corsMaxAge": 1728000
+        },
+        "externalAuth": {
+          "url": "",
+          "host": "",
+          "signinUrl": "",
+          "method": "",
+          "requestRedirect": "",
+          "authSnippet": "",
+          "authCacheKey": "",
+          "authCacheDuration": null
+        },
+        "enableGlobalAuth": true,
+        "rateLimit": {
+          "connections": {
+            "name": "",
+            "limit": 0,
+            "burst": 0,
+            "sharedSize": 0
+          },
+          "rps": {
+            "name": "",
+            "limit": 0,
+            "burst": 0,
+            "sharedSize": 0
+          },
+          "rpm": {
+            "name": "",
+            "limit": 0,
+            "burst": 0,
+            "sharedSize": 0
+          },
+          "limit-rate": 0,
+          "limit-rate-after": 0,
+          "name": "",
+          "id": "",
+          "whitelist": null
+        },
+        "globalRateLimit": {
+          "namespace": "",
+          "limit": 0,
+          "window-size": 0,
+          "key": "",
+          "ignored-cidrs": null
+        },
+        "redirect": {
+          "url": "",
+          "code": 0,
+          "fromToWWW": false
+        },
+        "rewrite": {
+          "target": "",
+          "sslRedirect": false,
+          "forceSSLRedirect": false,
+          "appRoot": "",
+          "useRegex": false
+        },
+        "whitelist": {},
+        "proxy": {
+          "bodySize": "500m",
+          "connectTimeout": 5,
+          "sendTimeout": 195,
+          "readTimeout": 195,
+          "buffersNumber": 4,
+          "bufferSize": "256k",
+          "cookieDomain": "off",
+          "cookiePath": "off",
+          "nextUpstream": "error timeout",
+          "nextUpstreamTimeout": 0,
+          "nextUpstreamTries": 3,
+          "proxyRedirectFrom": "off",
+          "proxyRedirectTo": "off",
+          "requestBuffering": "on",
+          "proxyBuffering": "on",
+          "proxyHTTPVersion": "1.1",
+          "proxyMaxTempFileSize": "1024m"
+        },
+        "proxySSL": {
+          "secret": "",
+          "caFilename": "",
+          "caSha": "",
+          "crlFileName": "",
+          "crlSha": "",
+          "pemFilename": "",
+          "ciphers": "",
+          "protocols": "",
+          "proxySSLName": "",
+          "verify": "",
+          "verifyDepth": 0,
+          "proxySSLServerName": ""
+        },
+        "usePortInRedirects": false,
+        "configurationSnippet": "set $log_proxy_stack \"acc4-app7352-env11785\";",
+        "connection": {
+          "header": "",
+          "enabled": false
+        },
+        "defaultBackendUpstreamName": "upstream-default-backend",
+        "logs": {
+          "accessLog": true,
+          "rewriteLog": false
+        },
+        "influxDB": {
+          "influxDBEnabled": false,
+          "influxDBMeasurement": "default",
+          "influxDBPort": "8089",
+          "influxDBHost": "127.0.0.1",
+          "influxDBServerName": "nginx-ingress"
+        },
+        "backend-protocol": "HTTP",
+        "fastcgi": {
+          "index": "",
+          "params": null
+        },
+        "custom-http-errors": null,
+        "modsecurity": {
+          "enable-modsecurity": false,
+          "enable-modsecurity-set": false,
+          "enable-owasp-core-rules": false,
+          "modsecurity-transaction-id": "",
+          "modsecurity-snippet": ""
+        },
+        "satisfy": "",
+        "mirror": {
+          "source": "",
+          "requestBody": "on",
+          "target": ""
+        },
+        "opentracing": {
+          "enabled": false,
+          "set": false
+        }
+      }
+    ],
+    "aliases": [
+      "6971a7b6226589edb82456c0ff7526046859d56146cc8bcea9ba46ec7c8c9c2f"
+    ],
+    "certificateAuth": {
+      "secret": "",
+      "caFilename": "",
+      "caSha": "",
+      "crlFileName": "",
+      "crlSha": "",
+      "pemFilename": "",
+      "verify_client": "",
+      "validationDepth": 0,
+      "errorPage": "",
+      "passCertToUpstream": false,
+      "AuthTLSError": ""
+    },
+    "proxySSL": {
+      "secret": "",
+      "caFilename": "",
+      "caSha": "",
+      "crlFileName": "",
+      "crlSha": "",
+      "pemFilename": "",
+      "ciphers": "",
+      "protocols": "",
+      "proxySSLName": "",
+      "verify": "",
+      "verifyDepth": 0,
+      "proxySSLServerName": ""
+    },
+    "serverSnippet": "set $use_paid_geoip_database \"false\";\nset $log_sample \"\";\n"
+  }
+]
