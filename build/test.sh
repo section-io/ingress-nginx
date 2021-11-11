@@ -23,10 +23,15 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-if [ -z "${PKG}" ]; then
-  echo "PKG must be set"
-  exit 1
-fi
+# if [ -z "${PKG}" ]; then
+#   echo "PKG must be set"
+#   exit 1
+# fi
+
+# go test -v \
+#   $(go list "${PKG}/..." | grep -v vendor | grep -v '/test/e2e' | grep -v images | grep -v "docs/examples")
+
 
 go test -v \
-  $(go list "${PKG}/..." | grep -v vendor | grep -v '/test/e2e' | grep -v images | grep -v "docs/examples")
+   k8s.io/ingress-nginx/internal/ingress/controller/template/section \
+   k8s.io/ingress-nginx/internal/ingress/metric/collectors

@@ -58,6 +58,8 @@ type collector struct {
 	nginxStatus  collectors.NGINXStatusCollector
 	nginxProcess collectors.NGINXProcessCollector
 
+	luaStatus collectors.NGINXLuaStatusCollector
+
 	ingressController *collectors.Controller
 
 	socket *collectors.SocketCollector
@@ -73,6 +75,11 @@ func NewCollector(metricsPerHost bool, registry *prometheus.Registry) (Collector
 	}
 
 	podName := os.Getenv("POD_NAME")
+
+	lc, err := collectors.NewNGINXLuaStatus(podName, podNamespace, class.IngressClass)
+	if err != nil {
+		return nil, err
+	}
 
 	nc, err := collectors.NewNGINXStatus(podName, podNamespace, class.IngressClass)
 	if err != nil {
@@ -94,6 +101,8 @@ func NewCollector(metricsPerHost bool, registry *prometheus.Registry) (Collector
 	return Collector(&collector{
 		nginxStatus:  nc,
 		nginxProcess: pc,
+
+		luaStatus: lc,
 
 		ingressController: ic,
 
@@ -131,6 +140,7 @@ func (c *collector) RemoveMetrics(ingresses, hosts []string) {
 func (c *collector) Start() {
 	c.registry.MustRegister(c.nginxStatus)
 	c.registry.MustRegister(c.nginxProcess)
+	c.registry.MustRegister(c.luaStatus)
 	c.registry.MustRegister(c.ingressController)
 	c.registry.MustRegister(c.socket)
 
@@ -138,6 +148,7 @@ func (c *collector) Start() {
 	// a server section with the status port
 	go func() {
 		time.Sleep(5 * time.Second)
+		go c.luaStatus.Start()
 		c.nginxStatus.Start()
 	}()
 	go c.nginxProcess.Start()
@@ -147,11 +158,13 @@ func (c *collector) Start() {
 func (c *collector) Stop() {
 	c.registry.Unregister(c.nginxStatus)
 	c.registry.Unregister(c.nginxProcess)
+	c.registry.Unregister(c.luaStatus)
 	c.registry.Unregister(c.ingressController)
 	c.registry.Unregister(c.socket)
 
 	c.nginxStatus.Stop()
 	c.nginxProcess.Stop()
+	c.luaStatus.Stop()
 	c.socket.Stop()
 }
 

@@ -57,3 +57,8 @@ images/fastcgi-helloserver/rootfs/fastcgi-helloserver
 cmd/plugin/release/ingress-nginx.yaml
 cmd/plugin/release/*.tar.gz
 cmd/plugin/release/LICENSE
+
+.modcache
+by-tag
+
+VOLUME_ID

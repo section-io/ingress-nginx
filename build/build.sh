@@ -29,6 +29,7 @@ mandatory=(
   COMMIT_SHA
   REPO_INFO
   TAG
+  VOLUME_ID
 )
 
 missing=false
@@ -46,6 +47,22 @@ fi
 export CGO_ENABLED=0
 export GOARCH=${ARCH}
 
+cat <<EOF
+
+// from build.sh
+
+PKG=${PKG}
+ARCH=${ARCH}
+COMMIT_SHA=${COMMIT_SHA}
+REPO_INFO=${REPO_INFO}
+TAG=${TAG}
+GOARCH=${GOARCH}
+CGO_ENABLED=${CGO_ENABLED}
+VOLUME_ID=${VOLUME_ID}
+
+EOF
+
+echo "building the nginx-ingress-controller"
 go build \
   -trimpath -ldflags="-buildid= -w -s \
     -X ${PKG}/version.RELEASE=${TAG} \
@@ -53,6 +70,7 @@ go build \
     -X ${PKG}/version.REPO=${REPO_INFO}" \
   -o "rootfs/bin/${ARCH}/nginx-ingress-controller" "${PKG}/cmd/nginx"
 
+echo "building the dbg"
 go build \
   -trimpath -ldflags="-buildid= -w -s \
     -X ${PKG}/version.RELEASE=${TAG} \
@@ -60,6 +78,7 @@ go build \
     -X ${PKG}/version.REPO=${REPO_INFO}" \
   -o "rootfs/bin/${ARCH}/dbg" "${PKG}/cmd/dbg"
 
+echo "building the waitshutdown"
 go build \
   -trimpath -ldflags="-buildid= -w -s \
     -X ${PKG}/version.RELEASE=${TAG} \
