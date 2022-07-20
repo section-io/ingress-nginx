@@ -1,0 +1,53 @@
+From 2c8dd1c33e19842fcf1e87b53cb86aeeea094dda Mon Sep 17 00:00:00 2001
+From: Maxim Dounin <mdounin@mdounin.ru>
+Date: Sat, 30 Oct 2021 02:39:19 +0300
+Subject: [PATCH] Changed ngx_chain_update_chains() to test tag first (ticket
+ #2248).
+
+Without this change, aio used with HTTP/2 can result in connection hang,
+as observed with "aio threads; aio_write on;" and proxying (ticket #2248).
+
+The problem is that HTTP/2 updates buffers outside of the output filters
+(notably, marks them as sent), and then posts a write event to call
+output filters.  If a filter does not call the next one for some reason
+(for example, because of an AIO operation in progress), this might
+result in a state when the owner of a buffer already called
+ngx_chain_update_chains() and can reuse the buffer, while the same buffer
+is still sitting in the busy chain of some other filter.
+
+In the particular case a buffer was sitting in output chain's ctx->busy,
+and was reused by event pipe.  Output chain's ctx->busy was permanently
+blocked by it, and this resulted in connection hang.
+
+Fix is to change ngx_chain_update_chains() to skip buffers from other
+modules unconditionally, without trying to wait for these buffers to
+become empty.
+---
+ src/core/ngx_buf.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/core/ngx_buf.c b/src/core/ngx_buf.c
+index c3783c4467..811f24d963 100644
+--- a/src/core/ngx_buf.c
++++ b/src/core/ngx_buf.c
+@@ -203,16 +203,16 @@ ngx_chain_update_chains(ngx_pool_t *p, ngx_chain_t **free, ngx_chain_t **busy,
+     while (*busy) {
+         cl = *busy;
+ 
+-        if (ngx_buf_size(cl->buf) != 0) {
+-            break;
+-        }
+-
+         if (cl->buf->tag != tag) {
+             *busy = cl->next;
+             ngx_free_chain(p, cl);
+             continue;
+         }
+ 
++        if (ngx_buf_size(cl->buf) != 0) {
++            break;
++        }
++
+         cl->buf->pos = cl->buf->start;
+         cl->buf->last = cl->buf->start;
+ 
