@@ -54,6 +54,9 @@ type socketData struct {
 	Ingress   string `json:"ingress"`
 	Service   string `json:"service"`
 	Path      string `json:"path"`
+
+	TLSProtocol string `json:"tlsProtocol"`
+	TLSCipherSuite string `json:"tlsCipherSuite"`
 }
 
 // SocketCollector stores prometheus metrics and ingress meta-data
@@ -71,6 +74,7 @@ type SocketCollector struct {
 	bytesSent *prometheus.HistogramVec
 
 	requests *prometheus.CounterVec
+	tlsRequests *prometheus.CounterVec
 
 	listener net.Listener
 
@@ -180,6 +184,16 @@ func NewSocketCollector(pod, namespace, class string, metricsPerHost bool) (*Soc
 			[]string{"ingress", "namespace", "status", "service"},
 		),
 
+		tlsRequests: prometheus.NewCounterVec(
+			prometheus.CounterOpts{
+				Name:        "tls_requests",
+				Help:        "The total number of client requests by TLS attributes.",
+				Namespace:   PrometheusNamespace,
+				ConstLabels: constLabels,
+			},
+			[]string{"tls_protocol", "tls_cipher_suite"},
+		),
+
 		bytesSent: prometheus.NewHistogramVec(
 			prometheus.HistogramOpts{
 				Name:        "bytes_sent",
@@ -261,11 +275,23 @@ func (sc *SocketCollector) handleMessage(msg []byte) {
 			"service":   stats.Service,
 		}
 
+		tlsLabels := prometheus.Labels{
+			"tls_protocol": stats.TLSProtocol,
+			"tls_cipher_suite": stats.TLSCipherSuite,
+		}
+
 		requestsMetric, err := sc.requests.GetMetricWith(collectorLabels)
 		if err != nil {
 			klog.ErrorS(err, "Error fetching requests metric")
 		} else {
 			requestsMetric.Inc()
+		}
+
+		tlsMetric, err := sc.tlsRequests.GetMetricWith(tlsLabels)
+		if err != nil {
+			klog.ErrorS(err, "Error fetching tls metric")
+		} else {
+			tlsMetric.Inc()
 		}
 
 		if stats.Latency != -1 {
@@ -409,6 +435,7 @@ func (sc SocketCollector) Describe(ch chan<- *prometheus.Desc) {
 	sc.requestLength.Describe(ch)
 
 	sc.requests.Describe(ch)
+	sc.tlsRequests.Describe(ch)
 
 	sc.upstreamLatency.Describe(ch)
 
@@ -424,6 +451,7 @@ func (sc SocketCollector) Collect(ch chan<- prometheus.Metric) {
 	sc.requestLength.Collect(ch)
 
 	sc.requests.Collect(ch)
+	sc.tlsRequests.Collect(ch)
 
 	sc.upstreamLatency.Collect(ch)
 
