@@ -287,7 +287,7 @@ func (sc *SocketCollector) handleMessage(msg []byte) {
 			requestsMetric.Inc()
 		}
 
-		tlsMetric, err :+ sc.tlsRequests.GetMetricWith(tlsLabels)
+		tlsMetric, err := sc.tlsRequests.GetMetricWith(tlsLabels)
 		if err != nil {
 			klog.ErrorS(err, "Error fetching tls metric")
 		} else {
